@@ -1,4 +1,4 @@
-# demo_screen_swiggy
+# Swiggy Screen
 
 A new Flutter project.
 
