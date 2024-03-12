@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'components.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,244 +19,115 @@ class MyHomepage extends StatefulWidget {
   _MyHomepagestate createState() => _MyHomepagestate();
 }
 
-class _MyHomepagestate extends State<MyHomepage> {
-  List<String> Cities = ['Chennai', 'Puducherry', 'Kanchipuram'];
-  String? SelectedValue = 'Chennai';
+List<String> Votes = ['14.2k', '12.1k'];
+List<String> Foods = ['Ice-Creams', 'South Indian Food'];
+List<String> Cities = ['Chennai', 'Puducherry', 'Kanchipuram'];
+String? SelectedValue = 'Chennai';
 
+// class Food {
+//   int itemNum = 0;
+//   Widget? foodimage;
+//
+//   Food(int itemNum, Widget fimage) {
+//     this.itemNum = itemNum;
+//     this.foodimage = fimage;
+//   }
+//
+//   Widget layout() {
+//     return Container(
+//       decoration: cnd.grid_decor(),
+//       child: Column(
+//         children: [
+//           foodimage?? Container(),
+//           Text(Foods[itemNum] ?? ' ',
+//               style: TextStyle(fontWeight: FontWeight.bold)),
+//           Text(Votes[itemNumber] ?? ' '),
+//           btns.vote_now(),
+//         ],
+//       ),
+//     );
+//   }
+// }
+// List<Food> Category=[
+//   Food(0, imgs.ice_cream()),
+//   Food(1, imgs.idli())
+// ];
+
+class _MyHomepagestate extends State<MyHomepage> {
+  static Images imgs = Images();
+  static Buttons btns = Buttons();
+  static Containers_Decors cnd = Containers_Decors();
+  static Texts txt = Texts();
+  static var itemNumber = 0;
+
+  List<Container> food_grid = [
+    Container(
+      decoration: cnd.grid_decor(),
+      child: Column(
+        children: [
+          imgs.ice_cream(),
+          Text(Foods[itemNumber],
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(Votes[itemNumber]),
+          btns.vote_now(),
+        ],
+      ),
+    ),
+    Container(
+      decoration: cnd.grid_decor(),
+      child: Column(
+        children: [
+          imgs.idli(),
+          Text(
+            Foods[itemNumber + 1],
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(Votes[itemNumber + 1]),
+          btns.vote_now(),
+        ],
+      ),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          actions: [
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 3,
-                        blurRadius: 4,
-                        offset: Offset(0, 3),
-                      )
-                    ]),
-                child: IconButton(
-                  icon: Icon(CupertinoIcons.share_up),
-                  onPressed: () {},
-                ))
-          ],
-          leading: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 3,
-                      blurRadius: 4,
-                      offset: Offset(0, 3),
-                    )
-                  ]),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-                onPressed: () {},
-              ))),
+        actions: [btns.back_button()],
+        leading: btns.share_button(),
+      ),
       body: Container(
         color: Colors.white38,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: Image(
-                image: AssetImage('images/Res-Awards.png.png'),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.05),
-                  border: Border(
-                      top: BorderSide(color: Colors.black, width: 0.3),
-                      bottom: BorderSide(color: Colors.black, width: 0.3)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 1,
-                      offset: Offset(6, 0),
-                    )
-                  ]),
-              child: Text('+ FLAVOUR MEETS FAME +'),
-            ),
-            Container(
-              child: Image(
-                image: AssetImage('images/Trophy.png'),
-              ),
-            ),
-            //DROPDOWNLIST
-            Container(
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.3,
-                    )),
-                child: DropdownButton<String>(
-                  value: SelectedValue,
-                  items: Cities.map((e) => DropdownMenuItem<String>(
-                        value: e,
-                        child: Text(
-                          e,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      )).toList(),
-                  onChanged: (e) => setState(() {
-                    SelectedValue = e;
-                  }),
-                )),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
+            imgs.restaurant_rewards(),
+            txt.flavor_meets_fame(),
+            imgs.trophy(),
+            DropdownButton<String>(
+              borderRadius: BorderRadius.circular(10),
               alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(3),
-                    alignment: Alignment.center,
-                    color: Colors.red,
-                    child: Text('Live'),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
+              icon: Icon(CupertinoIcons.chevron_down),
+              value: SelectedValue,
+              items: Cities.map((e) => DropdownMenuItem<String>(
+                    value: e,
                     child: Text(
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: true,
-                        'Anand Bhavan is currently leading the vote count in the Restaurant Awards of 2024'),
-                  )
-                ],
-              ),
+                      e,
+                    ),
+                  )).toList(),
+              onChanged: (e) => setState(() {
+                SelectedValue = e;
+              }),
             ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white70,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ToggleSwitch(
-                  minWidth: 190.0,
-                  cornerRadius: 20,
-                  animationDuration: 1300,
-                  initialLabelIndex: 0,
-                  customTextStyles: [TextStyle(color: Colors.white)],
-                  inactiveBgColor: Colors.grey,
-                  inactiveFgColor: Colors.white,
-                  activeFgColor: Colors.brown,
-                  activeBgColor: [Colors.black87],
-                  labels: ['Food Delivery', 'Dineout'],
-                  onToggle: (index) {},
-                ),
-              ),
-            ), //ToggleButton
+            txt.live_leading(),
+            btns.toggle_button(),
+            cnd.sized_box(09, 0),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Image(
-                        image: AssetImage('images/Ice-cream.png'),
-                        height: 100,
-                      ),
-                      Text('Ice-Creams',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('14.2k'),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: FloatingActionButton.extended(
-                          backgroundColor: Colors.black,
-                          label: Text(
-                            'Vote Now',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          icon: Icon(
-                            CupertinoIcons.arrow_right,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 50,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Image(
-                        image: AssetImage('images/Food.png'),
-                        height: 100,
-                        width: 100,
-                      ),
-                      Text(
-                        'South Indian Food',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('12.1k'),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: FloatingActionButton.extended(
-                          backgroundColor: Colors.black,
-                          label: Text(
-                            'Vote Now',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          icon: Icon(
-                            CupertinoIcons.arrow_right,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                food_grid[itemNumber],
+                cnd.sized_box(0, 40),
+                food_grid[itemNumber + 1],
               ],
             )
           ],
